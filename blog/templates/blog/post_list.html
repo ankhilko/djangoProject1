@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>POSTS</title>
-</head>
-<body>
-<b>HELLO GUYS</b>
-{% for post in posts %}
-<br>
-<b>{{ post.title }}</b>
-<br>
-<b>{{ post.author }}</b>
-<br>
-{% empty %}
-
-<b>NO POSTS HERE</b>
+{%  for post in posts %}
+<!-- Post preview-->
+<div class="post-preview">
+    <a href="{{ post.get_absolute_url }}">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <h3 class="post-subtitle">{{ post.descr|truncatechars:50 }}</h3>
+    </a>
+    <p class="post-meta">
+        Posted by
+        <a href="#!">{{ post.author }}</a>
+{#        {{ post.date_created|date:"dd:MM YYYY" }}#}
+        {{ post.date }}
+    </p>
+</div>
+<!-- Divider-->
+<hr class="my-4" />
 {% endfor %}
-
-</body>
-</html>
