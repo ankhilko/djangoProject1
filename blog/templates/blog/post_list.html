@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POSTS</title>
+</head>
+<body>
+<b>HELLO GUYS</b>
+{% for post in posts %}
+<br>
+<b>{{ post.title }}</b>
+<br>
+<b>{{ post.author }}</b>
+<br>
+{% empty %}
+
+<b>NO POSTS HERE</b>
+{% endfor %}
+
+</body>
+</html>
