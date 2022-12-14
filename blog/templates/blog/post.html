@@ -1,5 +1,6 @@
-
 {%  extends "blog/base.html" %}
+
+{% load static %}
 
 {% block title %}
 {{ post.title }}
@@ -16,6 +17,8 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
+                        {{ post.pk }}
+                        {{ post.id }}
                         {{ post.descr }}
                         <h2 class="section-heading">{{ post.descr|truncatechars:20 }}</h2>
                 {{ post.descr }}
@@ -23,7 +26,7 @@
                 {{ post.descr }}
                         <h2 class="section-heading">{{ post.descr|truncatechars:8 }}</h2>
                 {{ post.descr }}
-                        <a href="#!"><img class="img-fluid" src="assets/img/post-sample-image.jpg" alt="..." /></a>
+                        <a href="#!"><img class="img-fluid" src="{% static 'assets/img/post-sample-image.jpg' %}" alt="..." /></a>
                         <span class="caption text-muted">{{ post.descr|truncatechars:15 }}</span>
                 {{ post.descr }}
                 {{ post.descr }}
@@ -32,6 +35,8 @@
                             <a href="http://spaceipsum.com/">{{ post.author }}</a>
                             &middot; Images by
                             <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
+                            <br>
+                            {{ post.date }}
                         </p>
                     </div>
                 </div>
