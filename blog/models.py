@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
 
+
 # Create your models here.
 
 
@@ -63,13 +64,18 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         verbose_name='автор',
     )
+    image = models.ImageField(
+        upload_to='post',
+        verbose_name='картинка',
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('blog_post', kwargs={'post_slug': self.slug})
-
 
     # можем использовать вместо date_created
     @property
@@ -80,9 +86,26 @@ class Post(models.Model):
         verbose_name = 'пост'
         verbose_name_plural = 'посты'
         db_table = 'blog_posts'
-        ordering = ['date_created']    # можно описать и в админке и в мете
+        ordering = ['date_created']  # можно описать и в админке и в мете
 
 
+class Contact(models.Model):
+    name = models.CharField(
+        max_length=64, verbose_name='имя'
+    )
+    email = models.CharField(
+        max_length=254, verbose_name='почта'
+    )
+    message = models.CharField(
+        max_length=1024, verbose_name='сообщение'
+    )
+    date_created = models.DateTimeField(default=now, verbose_name='дата сообщения')
 
+    def __str__(self):
+        return self.email
 
-
+    class Meta:
+        db_table = 'blog_contacts',
+        verbose_name = 'контакт',
+        verbose_name_plural = 'контакты',
+        ordering = ['date_created']

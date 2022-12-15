@@ -3,8 +3,9 @@ from django.http import HttpRequest, JsonResponse
 from django.views.decorators.http import require_GET
 
 from .models import Post
-
+from .forms import ContactForm
 # Create your views here.
+
 
 @require_GET
 def blog_list(request: HttpRequest):            #функция представления - обрабатывает все запросы
@@ -19,6 +20,19 @@ def post_detail(request: HttpRequest, post_slug: str):
     return render(request, 'blog/post.html', {'post': post})
 
 
-def error404(request, exception):                       # settings -> defug -> False
+def contact(request: HttpRequest):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    return render(request, 'blog/contact.html', {'contact_form': ContactForm})
+
+
+def about(request: HttpRequest):
+    return render(request, 'blog/about.html')
+
+
+def error404(request, exception):                       # settings -> debug -> False
     return render(request, 'blog/error_404.html')
 
