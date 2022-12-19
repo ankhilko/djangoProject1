@@ -1,10 +1,20 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.http import HttpRequest, JsonResponse
 from django.views.decorators.http import require_GET
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 
 from .models import Post
 from .forms import ContactForm
 # Create your views here.
+
+
+class PostListView(ListView):
+    template_name = 'blog/index.html'
+    context_object_name = 'posts'
+    model = Post
+
+
 
 
 @require_GET
