@@ -4,7 +4,7 @@ from django.views.decorators.http import require_GET
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, TemplateView
 
-from .models import Post
+from .models import Post, Contact
 from .forms import ContactForm
 # Create your views here.
 
@@ -51,6 +51,37 @@ class PostDetailView(BaseMixin, DetailView):
 
 
 
+class AboutTemplateView(BaseMixin, TemplateView):
+    template_name = 'blog/about.html'
+    context_object_name = 'about'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()    # перегружаем родительский метод, дополняем его (полиморфизм)
+        context.update(self.context)
+        context['heading'] = 'ABOUT'
+        context['coordinate'] = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2350.682974602827!2d27.547051915390377!3d53.90183854065862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcfe95955c31b%3A0xb360ae59fb52db5d!2sFaberlik%20Nemiga%205!5e0!3m2!1sen!2sby!4v1671128792219!5m2!1sen!2sby'
+        context['text'] = '''
+        ABOUT ABOUT ABOUT ABOUT ABOUT ABOUT
+        ABOUT ABOUT ABOUT ABOUT ABOUT ABOUT
+        ABOUT ABOUT ABOUT ABOUT ABOUT ABOUT
+        ABOUT ABOUT ABOUT ABOUT ABOUT ABOUT
+        '''
+        return context
+
+
+class ContactCreateView(BaseMixin, CreateView):
+    template_name = 'blog/contact.html'
+    context_object_name = 'contact'
+    model = Contact
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()    # перегружаем родительский метод, дополняем его (полиморфизм)
+        context.update(self.context)
+        return context
+
+
+
+
 
 
 @require_GET
@@ -64,6 +95,8 @@ def post_detail(request: HttpRequest, post_slug: str):
     post = get_object_or_404(Post, slug=post_slug)
     # post = Post.objects.get(slug=post_slug)
     return render(request, 'blog/post.html', {'post': post})
+
+
 
 
 def contact(request: HttpRequest):
