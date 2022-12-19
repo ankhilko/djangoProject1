@@ -9,10 +9,46 @@ from .forms import ContactForm
 # Create your views here.
 
 
-class PostListView(ListView):
+
+class BaseMixin:
+    context = {
+        'twitter': 'https://twitter.com',
+        'facebook': 'https://facebook.com',
+        'github': 'https://github.com',
+    }
+
+    # def get_mixin(self):
+    #     return {}
+
+class PostListView(BaseMixin, ListView):
     template_name = 'blog/index.html'
     context_object_name = 'posts'
     model = Post
+
+    def get_queryset(self):
+        return Post.objects.filter(is_published=True)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()    # перегружаем родительский метод, дополняем его (полиморфизм)
+        context['heading'] = 'MIXIN HEADING'
+        context['subheading'] = 'mixin subheading'
+        context.update(self.context)
+        # context.update(self.get_mixin)
+        return context
+
+
+class PostDetailView(BaseMixin, DetailView):
+    template_name = 'blog/post.html'
+    context_object_name = 'post'
+    slug_url_kwarg = 'post_slug'
+    model = Post
+    # slug_field = 'slug'      # если у нас несколько слагов или другое название
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()    # перегружаем родительский метод, дополняем его (полиморфизм)
+        context.update(self.context)
+        return context
+
 
 
 
